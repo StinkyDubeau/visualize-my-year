@@ -2,7 +2,7 @@ import express from "express";
 import pg from "pg";
 import bodyParser from "body-parser";
 
-const PROJECTNAME = "p5 in node";
+const PROJECTNAME = "visualize-my-year";
 const APP = express();
 const PORT = 3000;
 
