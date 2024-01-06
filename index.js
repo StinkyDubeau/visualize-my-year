@@ -12,11 +12,19 @@ APP.use(express.static("./public"));
 let data = {
     package: {
         name: `${PROJECTNAME}`
+    },
+    toRender: {
+        // These variables are passed to your p5js sketch.
+        projectName: PROJECTNAME,
+        testText: `Hello world! This is ${PROJECTNAME}`,
     }
 }
 
 APP.get("/", (req, res) => {
-    res.render("index.ejs", data);
+    res.render("index.ejs", {
+        package: data.package,
+        toRender: JSON.stringify(data.toRender)
+    });
 });
 
 APP.listen(PORT, (req, res) => {
