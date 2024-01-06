@@ -4,5 +4,7 @@ function setup() {
 
 function draw() {
   background(100);
-  square(50, 50);
+  //   x   y   w   h
+  rect(30, 20, 55, 85);
+  point(90, 100);
 }
