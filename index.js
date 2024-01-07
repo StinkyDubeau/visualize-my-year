@@ -2,31 +2,52 @@ import express from "express";
 import pg from "pg";
 import bodyParser from "body-parser";
 
-const PROJECTNAME = "visualize-my-year";
-const APP = express();
-const PORT = 3000;
+const projectName = "visualize-my-year";
+const currentUser = "user_name";
+const app = express();
+const port = 3000;
+const db = new pg.Client({
+    user: "postgres",
+    password: "123456",
+    host: "localhost",
+    port: "5432",
+    database: projectName
+});
 
-APP.use(bodyParser.urlencoded({ extended: true }));
-APP.use(express.static("./public"));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("./public"));
 
-let data = {
+let pageRenderingData = {
     package: {
-        name: `${PROJECTNAME}`
+        projectName: projectName,
+        currentUser: currentUser,
     },
-    toRender: {
+    sketchData: {
         // These variables are passed to your p5js sketch.
-        projectName: PROJECTNAME,
-        testText: `Hello world! This is ${PROJECTNAME}`,
+        projectName: projectName,
+        testText: `Hello ${currentUser}! This is ${projectName}`,
     }
 }
 
-APP.get("/", (req, res) => {
+async function addTracker(trackerName){
+    const query = `ALTER TABLE ${currentU} ADD COLUMN ${trackerName} BOOL;`
+    console.log(query);
+}
+
+app.get("/", (req, res) => {
     res.render("index.ejs", {
-        package: data.package,
-        toRender: JSON.stringify(data.toRender)
+        package: pageRenderingData.package,
+        toRender: JSON.stringify(pageRenderingData.sketchData)
     });
 });
 
-APP.listen(PORT, (req, res) => {
-    console.log(`App running on ${PORT}`);
+app.post("/add-col", async (req, res) => {
+    console.log(req.body);
+    await addTracker(req.body.colName);
+    res.redirect("/");
+})
+
+
+app.listen(port, (req, res) => {
+    console.log(`App running on ${port}`);
 })

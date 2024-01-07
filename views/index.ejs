@@ -1,27 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("./partial/header.ejs") %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="main.css" rel="stylesheet">
-    <title>Document</title>
-</head>
+<p>Welcome to <%= package.projectName %>. You are logged in as <%= package.currentUser %>. </p>
 
-<body>
-    <p>
-        <%= package.name %>
-    </p>
-    <p>
-        <%= toRender.testText %>
-    </p>
-    <!-- CDN for p5js and p5js sketch reference. -->
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
-    <!-- This is where we will pass data into the sketch. -->
-    <script>
-        const sketchData = '<%- toRender %>';
-    </script>
-    <script src="sketch.js"></script>
-</body>
+<%- include("./partial/forms/add-col.ejs") %>
 
-</html>
+<div id="canvas-container"></div>
+
+<%- include("./partial/footer.ejs") %>

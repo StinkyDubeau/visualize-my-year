@@ -1,4 +1,9 @@
 body{
     font-family: sans-serif;
-    background: salmon;
+    background: palegreen;
+}
+
+/* p5js sketch */
+#canvas-container{
+    margin-top: 20px;
 }
