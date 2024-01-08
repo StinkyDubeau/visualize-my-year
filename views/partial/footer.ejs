@@ -1,10 +1,12 @@
 <!-- CDN for p5js and p5js sketch reference. -->
 <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
 <!-- This is where we will pass data into the sketch. -->
+<% if(locals.toRender) { %>
 <script>
     const sketchData = '<%- toRender %>';
 </script>
 <script src="sketch.js"></script>
+<% } %>
 
 <h2>This is a footer</h2>
 

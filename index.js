@@ -16,6 +16,9 @@ const db = new pg.Client({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("./public"));
+db.connect();
+
+let trackers = [];
 
 let pageRenderingData = {
     package: {
@@ -29,21 +32,51 @@ let pageRenderingData = {
     }
 }
 
-async function addTracker(trackerName){
-    const query = `ALTER TABLE ${currentU} ADD COLUMN ${trackerName} BOOL;`
-    console.log(query);
+async function loadTrackers(callback) {
+    const query = `SELECT * FROM ${currentUser} WHERE 1=0;`;
+    trackers = [];
+    const res = await queryDatabase(query);
+    res.fields.forEach(field => {
+        trackers.push(field.name);
+    });
 }
+
+async function queryDatabase(query) {
+    return new Promise((resolve, reject) => {
+        db.query(query, async (err, res) => {
+            if (err) {
+                console.log(` ----------- START QUERY ERROR LOG -----------`);
+                console.log(err);
+                console.log(` ----------- END QUERY ERROR LOG -----------`);
+                reject(err);
+            } else {
+                console.log(`Successful query: "${query}"`);
+                resolve(res);
+            }
+        });
+    });
+}
+
+
+app.get("/admin-panel", async (req, res) => {
+    await loadTrackers();
+    res.render("admin-panel.ejs", {
+        package: pageRenderingData.package,
+        toRender: JSON.stringify(pageRenderingData.sketchData),
+        trackers: trackers
+    });
+});
 
 app.get("/", (req, res) => {
     res.render("index.ejs", {
         package: pageRenderingData.package,
-        toRender: JSON.stringify(pageRenderingData.sketchData)
+        // toRender: JSON.stringify(pageRenderingData.sketchData)
     });
 });
 
-app.post("/add-col", async (req, res) => {
+app.post("/add-tracker", async (req, res) => {
     console.log(req.body);
-    await addTracker(req.body.colName);
+    await queryDatabase(`ALTER TABLE ${currentUser} ADD COLUMN ${req.body.trackerName} BOOL;`);
     res.redirect("/");
 })
 
