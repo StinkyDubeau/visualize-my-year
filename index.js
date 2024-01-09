@@ -36,8 +36,10 @@ async function loadTrackers(callback) {
     const query = `SELECT * FROM ${currentUser} WHERE 1=0;`;
     trackers = [];
     const res = await queryDatabase(query);
-    res.fields.forEach(field => {
-        trackers.push(field.name);
+    console.log(res);
+    res.rows.forEach(row => {
+        console.log(row);
+        //trackers.push(field.name);
     });
 }
 
@@ -56,7 +58,6 @@ async function queryDatabase(query) {
         });
     });
 }
-
 
 app.get("/admin-panel", async (req, res) => {
     await loadTrackers();
@@ -79,7 +80,6 @@ app.post("/add-tracker", async (req, res) => {
     await queryDatabase(`ALTER TABLE ${currentUser} ADD COLUMN ${req.body.trackerName} BOOL;`);
     res.redirect("/");
 })
-
 
 app.listen(port, (req, res) => {
     console.log(`App running on ${port}`);

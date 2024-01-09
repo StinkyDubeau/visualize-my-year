@@ -1,0 +1,20 @@
+1. Show the first tracker (skip date!)
+    a) If there's another tracker, show "skip"
+2. Await user input (Enter into tracker)
+
+<%- include("./partial/header.ejs") %>
+
+<p>Welcome to <%= package.projectName %> admin panel. You are logged in as <%= package.currentUser %>. </p>
+
+<%- include("./partial/forms/add-tracker.ejs") %>
+
+<!-- Render all trackers -->
+<ul>
+<% for(var i = 0; i < trackers.length; i++){ %>
+    <li><%= trackers[i] %></li>
+<% } %>
+</ul>
+
+<div id="canvas-container"></div>
+
+<%- include("./partial/footer.ejs") %>
