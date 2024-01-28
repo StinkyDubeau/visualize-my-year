@@ -1,13 +1,15 @@
 <%- include("./partial/header.ejs") %>
 
 <p>Welcome to <%= package.projectName %> admin panel. You are logged in as <%= package.currentUser %>. </p>
+<p>Today's date is <%= selectedDate.toDateString() %></p>
 
 <%- include("./partial/forms/add-tracker.ejs") %>
+<%- include("./partial/forms/log-to-tracker.ejs") %>
 
 <!-- Render all trackers -->
 <ul>
 <% for(var i = 0; i < trackers.length; i++){ %>
-    <li><%= trackers[i] %></li>
+    <li><%= trackers[i].date %><%= trackers[i].n %></li>
 <% } %>
 </ul>
 
